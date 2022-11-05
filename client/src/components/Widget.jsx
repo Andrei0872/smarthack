@@ -8,13 +8,14 @@ function Widget({ children, ...props }) {
     }),
     item: {
       name: 'foo',
-      height: 2,
-      width: 4,
+      height: props.height,
+      width: props.width,
+      ...props,
     }
   }))
   
   return (
-    <div ref={drag} {...props}>{children}</div>
+    <div ref={drag} style={{...props.customStyle ?? {}}}>{children}</div>
   )
 }
 

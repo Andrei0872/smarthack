@@ -5,13 +5,31 @@ import './BuildingArea.css'
 import Cell from './Cell';
 import { useState } from 'react';
 
+const mapWidgetCoordsToStyle = (coords) => {
+  debugger;
+  return {
+    gridColumn: `${coords.startX + 1} / ${coords.endX + 1}`,
+    gridRow: `${coords.startY + 1} / ${coords.endY + 1}`,
+    background: 'red'
+  }
+}
+
 function Sidebar() {
+  const [activeWidgets, setActiveWidgets] = useState([]);
+
   const [{ isOver, itemType, item }, drop] = useDrop(() => ({
     accept: 'widget',
     drop: (item, monitor) => {
       console.log('dropped');
       // item.dropped = true;
       console.log(item);
+      setActiveWidgets((widgets) => {
+        // TODO: duplicates
+        return [
+          ...widgets,
+          { ...item, customStyle: mapWidgetCoordsToStyle(item.coords) },
+        ]
+      });
 
       setOverCells(null);
     },
@@ -36,6 +54,13 @@ function Sidebar() {
           startY: rowIdx,
           endY: rowIdx + height,
         }); 
+
+        item.coords = {
+          startX: colIdx,
+          endX: colIdx + width,
+          startY: rowIdx,
+          endY: rowIdx + height,
+        }
       })
   }
   
@@ -45,9 +70,9 @@ function Sidebar() {
       <div className="page-adder">page adder</div>
       <div className="widgets">
         <ul>
-          <Widget>widget1</Widget>
-          <Widget>widget2</Widget>
-          <Widget>widget3</Widget>
+          <Widget preview={true} id={1} height={2} width={4}>widget1</Widget>
+          <Widget preview={true} id={2} height={3} width={5}>widget2</Widget>
+          <Widget preview={true} id={3} height={2} width={6}>widget3</Widget>
         </ul>
       </div>
     </div>
@@ -75,6 +100,18 @@ function Sidebar() {
           ))
         }
       </div>
+
+      {
+        activeWidgets.length ? (
+          <div className='active-widgets'>
+            {
+              activeWidgets.map(aw => (
+                <Widget key={aw.id} preview={false} {...aw}>foo</Widget>
+              ))
+            }
+          </div>
+        ) : null
+      }
     </div>
    </>
   )

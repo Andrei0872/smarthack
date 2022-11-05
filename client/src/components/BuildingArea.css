@@ -22,3 +22,10 @@
 .row.is-selected > .cell.is-selected {
   background-color: green;
 }
+
+.active-widgets {
+  display: grid;
+  grid-template-rows: repeat(12, 1fr);
+  grid-template-columns: repeat(12, 1fr);
+  height: 100%;
+}
