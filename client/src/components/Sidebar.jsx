@@ -6,7 +6,6 @@ import Cell from './Cell';
 import { useState } from 'react';
 
 const mapWidgetCoordsToStyle = (coords) => {
-  debugger;
   return {
     gridColumn: `${coords.startX + 1} / ${coords.endX + 1}`,
     gridRow: `${coords.startY + 1} / ${coords.endY + 1}`,
@@ -14,8 +13,17 @@ const mapWidgetCoordsToStyle = (coords) => {
   }
 }
 
+const createNewPage = (opts) => ({
+  localId: Math.random().toString(36).slice(2, 7),
+  name: 'index',
+  path: '/',
+  ...opts,
+});
+
 function Sidebar() {
   const [activeWidgets, setActiveWidgets] = useState([]);
+  const [pages, setPages] = useState(() => [createNewPage(), createNewPage({ name: 'Product Page', path: 'product/:id' })]);
+  const [crtPageId, setCrtPageId] = useState(() => pages[0].localId);
 
   const [{ isOver, itemType, item }, drop] = useDrop(() => ({
     accept: 'widget',
@@ -42,6 +50,8 @@ function Sidebar() {
 
   const [overCells, setOverCells] = useState(null);
 
+  const crtDayActiveWidgets = activeWidgets.filter(aw => aw.crtPage === crtPageId);
+
   // TODO(perf): debounce
   const onOverCell = (rowIdx, colIdx, dimensions) => {    
     // Up and right directions.
@@ -61,13 +71,25 @@ function Sidebar() {
           startY: rowIdx,
           endY: rowIdx + height,
         }
+
+        item.crtPage = crtPageId;
       })
   }
-  
+
   return (
   <>
     <div className="sidebar">
-      <div className="page-adder">page adder</div>
+      <div className="page-adder">
+        <button className='page-adder__add'>Add page</button>
+        
+        <ul className='pages'>
+          {
+            pages.map(p => (
+              <li onClick={() => setCrtPageId(p.localId)} className={`pages__page ${p.localId === crtPageId ? 'is-selected' : ''}`} key={p.localId}>{p.name} - {p.path}</li>
+            ))
+          }
+        </ul>
+      </div>
       <div className="widgets">
         <ul>
           <Widget preview={true} id={1} height={2} width={4}>widget1</Widget>
@@ -102,18 +124,18 @@ function Sidebar() {
       </div>
 
       {
-        activeWidgets.length ? (
+        crtDayActiveWidgets.length ? (
           <div className='active-widgets'>
             {
-              activeWidgets.map(aw => (
-                <Widget key={aw.id} preview={false} {...aw}>foo</Widget>
+              crtDayActiveWidgets.map(aw => (
+                <Widget key={`${aw.crtPageId}-${aw.id}`} preview={false} {...aw}>foo</Widget>
               ))
             }
           </div>
         ) : null
       }
     </div>
-   </>
+  </>
   )
 }
 
