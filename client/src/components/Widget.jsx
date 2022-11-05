@@ -9,11 +9,9 @@ function Widget({ children, ...props }) {
     item: {
       name: 'foo',
       height: 2,
-      length: 5,
+      width: 4,
     }
   }))
-  
-  console.log(isDragging);
   
   return (
     <div ref={drag} {...props}>{children}</div>

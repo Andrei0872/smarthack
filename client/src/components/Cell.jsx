@@ -1,21 +1,27 @@
+import { useRef } from "react";
 import { useDrop } from "react-dnd";
 
 function Cell({ children, ...props}) { 
-  // const [{ isOver, itemType }, drop] = useDrop(() => ({
-  //   accept: 'widget',
-  //   drop: (item, monitor) => {
-  //     console.log('dropped');
-  //   },
-  //   collect: monitor => ({
-  //     isOver: !!monitor.isOver(),
-  //     itemType: monitor.getItemType(),
-  //   }),
-  // }), []);
+  const cellRef = useRef();
+  const [{ isOver, itemType, item }, drop] = useDrop(() => ({
+    accept: 'widget',
+    drop: (item, monitor) => {
+      console.log('cell dropped');
+    },
+    collect: monitor => ({
+      isOver: !!monitor.isOver(),
+      itemType: monitor.getItemType(),
+      item: monitor.getItem(),
+    }),
+  }), []);
 
-  // console.log({ isOver , children});
+  
+  if (isOver) {
+    props.overCell({ height: item.height, width: item.width });
+  }
   
   return (
-    <div {...props}>{children}</div>
+    <div ref={drop} className={props.className ?? ''}>{children}</div>
   )
 }
 

@@ -8,7 +8,6 @@
 
 .building-area {
   position: relative;
-  z-index: -1;
 }
 
 .row {
@@ -18,4 +17,8 @@
 
 .cell {
   border: 1px solid black;
+}
+
+.row.is-selected > .cell.is-selected {
+  background-color: green;
 }
