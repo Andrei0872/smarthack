@@ -65,3 +65,9 @@ li.pages__page {
   border-radius: 5px;
   color: var(--cl-four);
 }
+
+.header {
+  background-color: var(--cl-four);
+  height: 100%;
+  color: #fff;
+}

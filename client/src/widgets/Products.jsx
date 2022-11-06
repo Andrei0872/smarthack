@@ -13,8 +13,6 @@ function Products() {
   const { products } = useProducts();
   const { productWidget } = useProductWidget();
 
-  console.log(products);
-
   const [{ isOver, itemType, item }, drop] = useDrop(() => ({
     accept: 'widget',
     drop: (item, monitor) => {

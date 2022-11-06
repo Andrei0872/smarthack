@@ -3,7 +3,7 @@ import './Sidebar.css'
 import Widget from './Widget'
 import './BuildingArea.css'
 import Cell from './Cell';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Title from '../widgets/Title';
 import { SPECIAL_DIMENSIONS } from '../constants';
 import Products from '../widgets/Products';
@@ -51,7 +51,12 @@ function Sidebar() {
         // TODO: duplicates
         return [
           ...widgets,
-          { ...item, preview: false, customStyle: mapWidgetCoordsToStyle(item.coords) },
+          {
+            ...item,
+            preview: false,
+            customStyle: mapWidgetCoordsToStyle(item.coords),
+            localId: Math.random().toString(36).slice(2, 7),
+          },
         ]
       });
 
@@ -98,6 +103,22 @@ function Sidebar() {
     setProductWidget(Product);
   }
 
+  const onTitleChange = (updatedInfo) => {
+    const { localId } = updatedInfo;
+    const updatedWidget = activeWidgets.find(aw => aw.localId === localId);
+
+    const updatedWidgets = activeWidgets.map(
+      aw => aw.localId === localId ? ({
+        ...updatedWidget,
+        existingValue: updatedInfo.newValue,
+      }) : aw
+    )
+
+    setActiveWidgets(updatedWidgets);
+  }
+
+  console.log(activeWidgets);
+
   return (
   <>
     <div className="sidebar">
@@ -118,10 +139,10 @@ function Sidebar() {
           <Widget className="widgets-list__item" name='widget2' preview={true} id={2} height={3} width={5}>widget2</Widget>
           <Widget className="widgets-list__item" name='widget3' preview={true} id={3} height={2} width={6}>widget3</Widget>
           <Widget className="widgets-list__item" name='Title' preview={true} id={4} height={4} width={8}>
-            <Title />
+            <Title change={onTitleChange} />
           </Widget>
           <Widget className="widgets-list__item" name='Header' preview={true} id={5} height={2} width={SPECIAL_DIMENSIONS.ALL}>
-            <div>Header</div>
+            <div className='header'>Header</div>
           </Widget>
           <Widget className="widgets-list__item" name='Products' preview={true} id={6} height={SPECIAL_DIMENSIONS.ALL_DOWNWARDS} width={SPECIAL_DIMENSIONS.ALL}>
             <Products />
@@ -161,8 +182,14 @@ function Sidebar() {
         crtDayActiveWidgets.length ? (
           <div className='active-widgets'>
             {
-              crtDayActiveWidgets.map(aw => (
-                <Widget key={`${aw.crtPageId}-${aw.id}`} preview={false} {...aw}>{aw.children}</Widget>
+              crtDayActiveWidgets.map((aw, i) => (
+                <Widget key={`${aw.localId}`} preview={false} {...aw}>
+                  {
+                    typeof aw.children === 'string' || aw.name !== 'Title' ? (
+                      aw.children
+                    ) : React.cloneElement(aw.children, { existingValue: aw.existingValue, change: onTitleChange,...aw })
+                  }
+                </Widget>
               ))
             }
           </div>
