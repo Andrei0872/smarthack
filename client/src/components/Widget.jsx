@@ -7,7 +7,6 @@ function Widget({ children, ...props }) {
       isDragging: !!monitor.isDragging()
     }),
     item: {
-      name: 'foo',
       height: props.height,
       width: props.width,
       children,
@@ -16,7 +15,13 @@ function Widget({ children, ...props }) {
   }))
   
   return (
-    <div ref={drag} className={props.className ?? ''} style={{...props.customStyle ?? {}}}>{children}</div>
+    <div
+        ref={drag}
+        className={props.className ?? ''}
+        style={{...props.customStyle ?? {}}}
+      >
+        {props.preview ? props.name : children}
+      </div>
   )
 }
 

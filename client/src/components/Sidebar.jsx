@@ -5,10 +5,11 @@ import './BuildingArea.css'
 import Cell from './Cell';
 import { useState } from 'react';
 import Title from '../widgets/Title';
+import { SPECIAL_DIMENSIONS } from '../constants';
 
 const mapWidgetCoordsToStyle = (coords) => {
   return {
-    gridColumn: `${coords.startX + 1} / ${coords.endX + 1}`,
+    gridColumn: `${coords.startX === SPECIAL_DIMENSIONS.ALL ? 1 : coords.startX + 1} / ${coords.endX === SPECIAL_DIMENSIONS.ALL ? -1 : coords.endX + 1}`,
     gridRow: `${coords.startY + 1} / ${coords.endY + 1}`,
     // background: 'red'
   }
@@ -36,7 +37,7 @@ function Sidebar() {
         // TODO: duplicates
         return [
           ...widgets,
-          { ...item, customStyle: mapWidgetCoordsToStyle(item.coords) },
+          { ...item, preview: false, customStyle: mapWidgetCoordsToStyle(item.coords) },
         ]
       });
 
@@ -60,15 +61,15 @@ function Sidebar() {
     Promise.resolve()
       .then(() => {
         setOverCells({
-          startX: colIdx,
-          endX: colIdx + width,
+          startX: width === SPECIAL_DIMENSIONS.ALL ? SPECIAL_DIMENSIONS.ALL : colIdx,
+          endX: width === SPECIAL_DIMENSIONS.ALL ? SPECIAL_DIMENSIONS.ALL : colIdx + width,
           startY: rowIdx,
           endY: rowIdx + height,
         }); 
 
         item.coords = {
-          startX: colIdx,
-          endX: colIdx + width,
+          startX: width === SPECIAL_DIMENSIONS.ALL ? SPECIAL_DIMENSIONS.ALL : colIdx,
+          endX: width === SPECIAL_DIMENSIONS.ALL ? SPECIAL_DIMENSIONS.ALL: colIdx + width,
           startY: rowIdx,
           endY: rowIdx + height,
         }
@@ -95,11 +96,14 @@ function Sidebar() {
       </div>
       <div className="widgets">
         <div className='widgets-list'>
-          <Widget className="widgets-list__item" preview={true} id={1} height={2} width={4}>widget1</Widget>
-          <Widget className="widgets-list__item" preview={true} id={2} height={3} width={5}>widget2</Widget>
-          <Widget className="widgets-list__item" preview={true} id={3} height={2} width={6}>widget3</Widget>
-          <Widget className="widgets-list__item" preview={true} id={4} height={4} width={8}>
+          <Widget className="widgets-list__item" name='widget1' preview={true} id={1} height={2} width={4}>widget1</Widget>
+          <Widget className="widgets-list__item" name='widget2' preview={true} id={2} height={3} width={5}>widget2</Widget>
+          <Widget className="widgets-list__item" name='widget3' preview={true} id={3} height={2} width={6}>widget3</Widget>
+          <Widget className="widgets-list__item" name='Title' preview={true} id={4} height={4} width={8}>
             <Title />
+          </Widget>
+          <Widget className="widgets-list__item" name='Header' preview={true} id={5} height={2} width={SPECIAL_DIMENSIONS.ALL}>
+            <div>Header</div>
           </Widget>
         </div>
       </div>
@@ -117,7 +121,7 @@ function Sidebar() {
                 Array.from({ length: CELLS_COUNT }).map((c, cIdx) => (
                   <Cell
                     overCell={(dimensions) => onOverCell(idx, cIdx, dimensions)}
-                    className={`cell ${overCells?.startX <= cIdx && cIdx < overCells?.endX ? 'is-selected' : ''}`}
+                    className={`cell ${overCells?.endX === SPECIAL_DIMENSIONS.ALL ? 'is-selected' : (overCells?.startX <= cIdx && cIdx < overCells?.endX ? 'is-selected' : '')}`}
                     key={`cell-${idx}-${cIdx}`}
                   >
                     {cIdx}
