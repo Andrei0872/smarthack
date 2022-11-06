@@ -87,3 +87,10 @@ li.pages__page {
   top: 0.5rem;
   cursor: pointer;
 }
+
+.default-message {
+  margin-top: 20vh;
+  text-align: center;
+  color: var(--cl-four);
+  font-size: 2.2rem;
+}

@@ -124,6 +124,8 @@ function Sidebar() {
     setActiveWidgets(activeWidgets.filter(aw => aw.crtPage !== crtPageId));
   }
 
+  const defaultText = <p className='default-message'>Drag & Drop widgets to see some <b>magic</b>!</p>
+
   return (
   <>
     <div className="sidebar">
@@ -202,7 +204,7 @@ function Sidebar() {
               ))
             }
           </div>
-        ) : null
+        ) : (isOver ? null : defaultText)
       }
     </div>
   </>
