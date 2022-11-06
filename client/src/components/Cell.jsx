@@ -21,7 +21,7 @@ function Cell({ children, ...props}) {
   }
   
   return (
-    <div ref={drop} className={props.className ?? ''}>{children}</div>
+    <div ref={drop} className={props.className ?? ''}></div>
   )
 }
 

@@ -15,7 +15,7 @@ function Widget({ children, ...props }) {
   }))
   
   return (
-    <div ref={drag} style={{...props.customStyle ?? {}}}>{children}</div>
+    <div ref={drag} className={props.className ?? ''} style={{...props.customStyle ?? {}}}>{children}</div>
   )
 }
 

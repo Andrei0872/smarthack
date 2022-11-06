@@ -91,11 +91,11 @@ function Sidebar() {
         </ul>
       </div>
       <div className="widgets">
-        <ul>
-          <Widget preview={true} id={1} height={2} width={4}>widget1</Widget>
-          <Widget preview={true} id={2} height={3} width={5}>widget2</Widget>
-          <Widget preview={true} id={3} height={2} width={6}>widget3</Widget>
-        </ul>
+        <div className='widgets-list'>
+          <Widget className="widgets-list__item" preview={true} id={1} height={2} width={4}>widget1</Widget>
+          <Widget className="widgets-list__item" preview={true} id={2} height={3} width={5}>widget2</Widget>
+          <Widget className="widgets-list__item" preview={true} id={3} height={2} width={6}>widget3</Widget>
+        </div>
       </div>
     </div>
 
