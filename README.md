@@ -1,5 +1,7 @@
 # Smarthack
 
+The presentation can be found [here](./docs/smarthack.pdf).
+
   - [Setting up](#setting-up)
     - [`.env` file](#env-file)
   - [Spinning up the application](#spinning-up-the-application)

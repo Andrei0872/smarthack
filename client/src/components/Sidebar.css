@@ -70,6 +70,10 @@ li.pages__page {
   background-color: var(--cl-four);
   height: 100%;
   color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.3rem;
 }
 
 .sidebar {
