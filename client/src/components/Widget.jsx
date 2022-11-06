@@ -10,6 +10,7 @@ function Widget({ children, ...props }) {
       name: 'foo',
       height: props.height,
       width: props.width,
+      children,
       ...props,
     }
   }))

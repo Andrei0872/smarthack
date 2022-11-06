@@ -4,12 +4,13 @@ import Widget from './Widget'
 import './BuildingArea.css'
 import Cell from './Cell';
 import { useState } from 'react';
+import Title from '../widgets/Title';
 
 const mapWidgetCoordsToStyle = (coords) => {
   return {
     gridColumn: `${coords.startX + 1} / ${coords.endX + 1}`,
     gridRow: `${coords.startY + 1} / ${coords.endY + 1}`,
-    background: 'red'
+    // background: 'red'
   }
 }
 
@@ -76,6 +77,8 @@ function Sidebar() {
       })
   }
 
+  const CELLS_COUNT = 36;
+
   return (
   <>
     <div className="sidebar">
@@ -95,20 +98,23 @@ function Sidebar() {
           <Widget className="widgets-list__item" preview={true} id={1} height={2} width={4}>widget1</Widget>
           <Widget className="widgets-list__item" preview={true} id={2} height={3} width={5}>widget2</Widget>
           <Widget className="widgets-list__item" preview={true} id={3} height={2} width={6}>widget3</Widget>
+          <Widget className="widgets-list__item" preview={true} id={4} height={4} width={8}>
+            <Title />
+          </Widget>
         </div>
       </div>
     </div>
 
-    <div className='building-area' ref={drop}>
-      <div className='widgets-wrapper'>
+    <div className={`building-area ${isOver ? 'is-over' : ''}`} ref={drop}>
+      <div style={{ zIndex: isOver ? 1 : -1 }} className='widgets-wrapper'>
         {
-          Array.from({ length: 12 }).map((r, idx) => (
+          Array.from({ length: CELLS_COUNT }).map((r, idx) => (
             <div
               className={`row ${overCells?.startY <= idx && idx < overCells?.endY ? 'is-selected' : ''}`}
               key={idx}
             >
               {
-                Array.from({ length: 12 }).map((c, cIdx) => (
+                Array.from({ length: CELLS_COUNT }).map((c, cIdx) => (
                   <Cell
                     overCell={(dimensions) => onOverCell(idx, cIdx, dimensions)}
                     className={`cell ${overCells?.startX <= cIdx && cIdx < overCells?.endX ? 'is-selected' : ''}`}
@@ -128,7 +134,7 @@ function Sidebar() {
           <div className='active-widgets'>
             {
               crtDayActiveWidgets.map(aw => (
-                <Widget key={`${aw.crtPageId}-${aw.id}`} preview={false} {...aw}>foo</Widget>
+                <Widget key={`${aw.crtPageId}-${aw.id}`} preview={false} {...aw}>{aw.children}</Widget>
               ))
             }
           </div>

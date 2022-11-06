@@ -1,6 +1,6 @@
 .widgets-wrapper {
   display: grid;
-  grid-template-rows: repeat(12, 1fr);
+  grid-template-rows: repeat(36, 1fr);
   height: 100%;
   position: absolute;
   inset: 0;
@@ -12,20 +12,20 @@
 
 .row {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
+  grid-template-columns: repeat(36, 1fr);
 }
 
-.cell {
+.is-over .cell {
   border: 1px solid var(--cl-three-light);
 }
 
 .row.is-selected > .cell.is-selected {
-  background-color: green;
+  background-color: var(--cl-one);
 }
 
 .active-widgets {
   display: grid;
-  grid-template-rows: repeat(12, 1fr);
-  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(36, 1fr);
+  grid-template-columns: repeat(36, 1fr);
   height: 100%;
 }
