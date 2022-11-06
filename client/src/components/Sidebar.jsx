@@ -9,6 +9,9 @@ import { SPECIAL_DIMENSIONS } from '../constants';
 import Products from '../widgets/Products';
 import Product from '../widgets/Product';
 import { ProductWidgetProvider, useProductWidget } from '../context/productWidgetContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faRefresh } from '@fortawesome/free-solid-svg-icons'
+
 
 const mapWidgetCoordsToStyle = (coords) => {
   return {
@@ -117,11 +120,17 @@ function Sidebar() {
     setActiveWidgets(updatedWidgets);
   }
 
-  console.log(activeWidgets);
+  const refreshCrtPageWidgets = () => {
+    setActiveWidgets(activeWidgets.filter(aw => aw.crtPage !== crtPageId));
+  }
 
   return (
   <>
     <div className="sidebar">
+      <button onClick={refreshCrtPageWidgets} className='sidebar_refresh'>
+        <FontAwesomeIcon icon={faRefresh} />
+      </button>
+
       <div className="page-adder">
         <button className='page-adder__add'>Add page</button>
         

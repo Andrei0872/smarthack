@@ -71,3 +71,19 @@ li.pages__page {
   height: 100%;
   color: #fff;
 }
+
+.sidebar {
+  position: relative;
+}
+
+.sidebar_refresh {
+  position: absolute;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--cl-four);
+  font-size: 1.4rem;
+  right: 0.5rem;
+  top: 0.5rem;
+  cursor: pointer;
+}
