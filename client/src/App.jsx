@@ -5,14 +5,38 @@ import Sidebar from './components/Sidebar';
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import Widget from './components/Widget';
 
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Routes,
+  Redirect,
+  Navigate
+} from "react-router-dom";
+import ImportItems from './components/ImportItems';
+import { ProductsProvider } from './context/productsContext';
+
+const MainApp = <DndProvider backend={HTML5Backend}>
+  <div className='main'>
+    <Sidebar />
+    {/* <BuildingArea /> */}
+  </div>
+</DndProvider>
+
 function App() {
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div className='main'>
-        <Sidebar />
-        {/* <BuildingArea /> */}
-      </div>
-    </DndProvider>
+    <Router>
+      <ProductsProvider>
+        <Routes>
+          <Route path="/import" element={<ImportItems />} />
+          <Route path="/build" element={MainApp} />
+          <Route
+            path="*"
+            element={<Navigate to="/import" replace />}
+          />
+        </Routes>
+      </ProductsProvider>
+    </Router>
   )
 }
 

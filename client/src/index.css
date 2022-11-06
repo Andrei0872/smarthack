@@ -7,3 +7,10 @@
 html, body, #root, .main {
   height: 100%;
 }
+
+:root {
+  --cl-one: #F0E446;
+  --cl-two: #B3AA73;
+  --cl-three-light: #F9F1CB;
+  --cl-four: #005247;
+}

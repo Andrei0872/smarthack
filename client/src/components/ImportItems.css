@@ -1,0 +1,24 @@
+.import {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  gap: 2rem;
+  background: var(--cl-three-light);
+}
+
+h2.import__title {
+  font-size: 3rem;
+  color: var(--cl-four);
+}
+
+.import-drop-area {
+  flex-basis: 30vh;
+  border: 3px solid var(--cl-four);
+  border-radius: 5px;
+  width: 50vw;
+  text-align: center;
+  padding-block-start: 1rem;
+  color: var(--cl-four);
+}
