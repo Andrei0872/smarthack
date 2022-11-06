@@ -7,6 +7,8 @@ import { useState } from 'react';
 import Title from '../widgets/Title';
 import { SPECIAL_DIMENSIONS } from '../constants';
 import Products from '../widgets/Products';
+import Product from '../widgets/Product';
+import { ProductWidgetProvider, useProductWidget } from '../context/productWidgetContext';
 
 const mapWidgetCoordsToStyle = (coords) => {
   return {
@@ -27,10 +29,21 @@ function Sidebar() {
   const [activeWidgets, setActiveWidgets] = useState([]);
   const [pages, setPages] = useState(() => [createNewPage(), createNewPage({ name: 'Product Page', path: 'product/:id' })]);
   const [crtPageId, setCrtPageId] = useState(() => pages[0].localId);
+  const { setProductWidget } = useProductWidget();
 
   const [{ isOver, itemType, item }, drop] = useDrop(() => ({
     accept: 'widget',
     drop: (item, monitor) => {
+      if (!item.coords) {
+        return;
+      }
+
+      item?.onProductDropped?.();
+
+      if (item.type === 'Product') {
+        return;
+      }
+      
       console.log('dropped');
       // item.dropped = true;
       console.log(item);
@@ -81,6 +94,10 @@ function Sidebar() {
 
   const CELLS_COUNT = 36;
 
+  const onProductDropped = () => {
+    setProductWidget(Product);
+  }
+
   return (
   <>
     <div className="sidebar">
@@ -109,6 +126,9 @@ function Sidebar() {
           <Widget className="widgets-list__item" name='Products' preview={true} id={6} height={SPECIAL_DIMENSIONS.ALL_DOWNWARDS} width={SPECIAL_DIMENSIONS.ALL}>
             <Products />
           </Widget>
+          <Widget onProductDropped={onProductDropped} className="widgets-list__item" name='Product' type='Product' preview={true} id={7} height={6} width={6}>
+            <Product />
+          </Widget>
         </div>
       </div>
     </div>
@@ -118,7 +138,7 @@ function Sidebar() {
         {
           Array.from({ length: CELLS_COUNT }).map((r, idx) => (
             <div
-              className={`row ${overCells?.endY === SPECIAL_DIMENSIONS.ALL_DOWNWARDS ? (overCells?.startY <= idx && 'is-selected' : '') : (overCells?.startY <= idx && idx < overCells?.endY ? 'is-selected' : '')}`}
+              className={`row ${isOver && (overCells?.endY === SPECIAL_DIMENSIONS.ALL_DOWNWARDS ? (overCells?.startY <= idx && 'is-selected' : '') : (overCells?.startY <= idx && idx < overCells?.endY ? 'is-selected' : ''))}`}
               key={idx}
             >
               {

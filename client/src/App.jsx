@@ -15,6 +15,7 @@ import {
 } from "react-router-dom";
 import ImportItems from './components/ImportItems';
 import { ProductsProvider } from './context/productsContext';
+import { ProductWidgetProvider } from './context/productWidgetContext';
 
 const MainApp = <DndProvider backend={HTML5Backend}>
   <div className='main'>
@@ -27,14 +28,16 @@ function App() {
   return (
     <Router>
       <ProductsProvider>
-        <Routes>
-          <Route path="/import" element={<ImportItems />} />
-          <Route path="/build" element={MainApp} />
-          <Route
-            path="*"
-            element={<Navigate to="/import" replace />}
-          />
-        </Routes>
+        <ProductWidgetProvider>
+          <Routes>
+            <Route path="/import" element={<ImportItems />} />
+            <Route path="/build" element={MainApp} />
+            <Route
+              path="*"
+              element={<Navigate to="/import" replace />}
+            />
+          </Routes>
+        </ProductWidgetProvider>
       </ProductsProvider>
     </Router>
   )

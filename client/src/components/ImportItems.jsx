@@ -31,7 +31,7 @@ function ImportItems() {
       const data = XLSX.utils.sheet_to_json(ws, {header:1});
       const [columns, ...products] = data;
       navigate('/build');
-      setProducts({ products });
+      setProducts(products.map(pValues => Object.fromEntries(pValues.map((v, i) => [columns[i].toLowerCase(), v]))));
     };
     reader.readAsBinaryString(file);
 
