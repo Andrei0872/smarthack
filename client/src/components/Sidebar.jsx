@@ -6,11 +6,12 @@ import Cell from './Cell';
 import { useState } from 'react';
 import Title from '../widgets/Title';
 import { SPECIAL_DIMENSIONS } from '../constants';
+import Products from '../widgets/Products';
 
 const mapWidgetCoordsToStyle = (coords) => {
   return {
     gridColumn: `${coords.startX === SPECIAL_DIMENSIONS.ALL ? 1 : coords.startX + 1} / ${coords.endX === SPECIAL_DIMENSIONS.ALL ? -1 : coords.endX + 1}`,
-    gridRow: `${coords.startY + 1} / ${coords.endY + 1}`,
+    gridRow: `${coords.startY + 1} / ${coords.endY === SPECIAL_DIMENSIONS.ALL_DOWNWARDS ? -1 : coords.endY + 1}`,
     // background: 'red'
   }
 }
@@ -64,14 +65,14 @@ function Sidebar() {
           startX: width === SPECIAL_DIMENSIONS.ALL ? SPECIAL_DIMENSIONS.ALL : colIdx,
           endX: width === SPECIAL_DIMENSIONS.ALL ? SPECIAL_DIMENSIONS.ALL : colIdx + width,
           startY: rowIdx,
-          endY: rowIdx + height,
+          endY: height === SPECIAL_DIMENSIONS.ALL_DOWNWARDS ? height : rowIdx + height,
         }); 
 
         item.coords = {
           startX: width === SPECIAL_DIMENSIONS.ALL ? SPECIAL_DIMENSIONS.ALL : colIdx,
           endX: width === SPECIAL_DIMENSIONS.ALL ? SPECIAL_DIMENSIONS.ALL: colIdx + width,
           startY: rowIdx,
-          endY: rowIdx + height,
+          endY: height === SPECIAL_DIMENSIONS.ALL_DOWNWARDS ? height : rowIdx + height,
         }
 
         item.crtPage = crtPageId;
@@ -105,6 +106,9 @@ function Sidebar() {
           <Widget className="widgets-list__item" name='Header' preview={true} id={5} height={2} width={SPECIAL_DIMENSIONS.ALL}>
             <div>Header</div>
           </Widget>
+          <Widget className="widgets-list__item" name='Products' preview={true} id={6} height={SPECIAL_DIMENSIONS.ALL_DOWNWARDS} width={SPECIAL_DIMENSIONS.ALL}>
+            <Products />
+          </Widget>
         </div>
       </div>
     </div>
@@ -114,7 +118,7 @@ function Sidebar() {
         {
           Array.from({ length: CELLS_COUNT }).map((r, idx) => (
             <div
-              className={`row ${overCells?.startY <= idx && idx < overCells?.endY ? 'is-selected' : ''}`}
+              className={`row ${overCells?.endY === SPECIAL_DIMENSIONS.ALL_DOWNWARDS ? (overCells?.startY <= idx && 'is-selected' : '') : (overCells?.startY <= idx && idx < overCells?.endY ? 'is-selected' : '')}`}
               key={idx}
             >
               {
